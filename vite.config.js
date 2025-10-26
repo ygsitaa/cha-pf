@@ -14,6 +14,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  // Add base path for GitHub Pages
+  base: '/cha-pf/',
   server: {
     hmr: {
       protocol: 'ws',
