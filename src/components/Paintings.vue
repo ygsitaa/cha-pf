@@ -61,41 +61,47 @@ watch(
   </div>
   <div v-else>
     <Portal hello="world" :handleCloseModal="handleCloseModal" v-if="props.selectedPainting">
-        <div class="painting-header">
-            <h4 v-if="props.selectedPainting.name">{{ props.selectedPainting.name }}</h4>
-            <button type="button" class="btn-close-portal fa-solid fa-xmark" data-bs-dismiss="modal" aria-label="Close" @click="handleCloseModal">X</button>
-        </div>
-        <div class="painting-img">
-            <div id="carouselModal" class="carousel slide">
-                <div class="carousel-inner">
-                    <div 
-                        v-for="(img, idx) in props.selectedPainting.images" 
-                        :key="img"
-                        :class="['carousel-item', { active: idx === 0 }]">
-                        <a :href="img" target="_blank"><LazyImage :src="img" class="d-block w-50 mx-auto" :alt="props.selectedPainting.name" /></a>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselModal" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselModal" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+      <div class="painting-header">
+        <h4 v-if="props.selectedPainting.name">{{ props.selectedPainting.name }}</h4>
+        <button type="button" class="btn-close-portal fa-solid fa-xmark" data-bs-dismiss="modal" aria-label="Close" @click="handleCloseModal">X</button>
+      </div>
+      <div class="painting-img">
+        <div id="carouselModal" class="carousel slide">
+          <div class="carousel-inner">
+            <div 
+              v-for="(img, idx) in props.selectedPainting.images" 
+              :key="img"
+              :class="['carousel-item', { active: idx === 0 }]">
+              <a :href="img" target="_blank">
+                <LazyImage 
+                  :src="img" 
+                  class="d-block w-50 mx-auto modal-image" 
+                  :alt="props.selectedPainting.name" 
+                />
+              </a>
             </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselModal" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselModal" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-        <div class="painting-descr" v-if="props.selectedPainting.descr">
-            <p>{{ props.selectedPainting.descr }}</p>
-        </div>  
+      </div>
+      <div class="painting-descr" v-if="props.selectedPainting.descr">
+        <p>{{ props.selectedPainting.descr }}</p>
+      </div>  
     </Portal>
 
     <div class="grid-scroll">
-        <div class="grid">
-            <div class="grid-element" v-for="(painting, paintingIdx) in paintings" :key="paintingIdx" @click="handleSelectPainting(painting)">
-                <LazyImage :src="painting.smallImg" :alt="painting.name"/>
-            </div>
+      <div class="grid">
+        <div class="grid-element" v-for="(painting, paintingIdx) in paintings" :key="paintingIdx" @click="handleSelectPainting(painting)">
+          <LazyImage class="smallImg" :src="painting.smallImg" :alt="painting.name"/>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -117,23 +123,37 @@ watch(
   min-height: 100%;
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+    scale: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
 .grid-element {
   cursor: pointer;
   overflow: hidden;
   border-radius: 8px;
   transition: transform 0.3s;
   scroll-snap-align: start;
+  animation: appear linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .grid-element:hover {
   transform: scale(1.05);
 }
 
-.grid-element img {
+.smallImg {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
   object-fit: cover;
+  transition: opacity .3s ease-in-out;
 }
 
 .painting-header {
@@ -185,10 +205,13 @@ watch(
 
 .painting-img img,
 .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: auto; /* Changed from 100% */
+    height: auto; /* Changed from 100% */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Changed from cover */
     display: block;
+    margin: 0 auto; /* Center the image */
 }
 
 .painting-descr {
@@ -201,6 +224,7 @@ watch(
     background: rgba(255,255,255,0.05);
     border-radius: 8px;
     padding: 1rem;
+    width: 100%;
 }
 
 /* WebKit browsers (Chrome, Edge, Safari) */
@@ -291,5 +315,21 @@ watch(
   .painting-descr {
     max-height: 200px;
   }
+}
+
+/* Modal image specific styles - use :deep() to target child component */
+.modal-image :deep(.image-container) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.modal-image :deep(img) {
+  object-fit: contain !important; /* Show full image, not cropped */
+  max-height: 75vh;
+  width: auto !important;
+  display: block;
+  margin: auto;
 }
 </style>

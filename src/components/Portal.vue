@@ -49,7 +49,7 @@ defineProps ({
     background: #000010;
     border-radius: 10px;
     padding: 1rem;
-    /* border: 1px solid red; */
+    border: 2px solid #4568DC;
     display: flex;
     flex-direction: column;
 }

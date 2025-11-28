@@ -42,7 +42,10 @@ onMounted(async () => {
 }
 
 .about-content {
-    width: 90%;
+  width: 90%;
+  border: 2px solid #4568DC;
+  padding: 30px;
+  border-radius: 20px;
 }
 
 @media (max-width: 600px) {
@@ -53,6 +56,9 @@ onMounted(async () => {
   }
   .about-content {
     height: 100%;
+    border: none;
+    padding: 0;
+    border-radius: 0;
   }
 }
 

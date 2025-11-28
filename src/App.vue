@@ -1,7 +1,6 @@
 <script setup>
 import LoadingSpinner from './components/LoadingSpinner.vue';
 import { ref, defineAsyncComponent, onMounted } from 'vue';
-import { fetchPaintings, fetchAboutContent, fetchContactInfo } from './services/api';
 
 const About = defineAsyncComponent({
   loader: () => import('./components/About.vue'),
@@ -53,13 +52,13 @@ function setSelectedPainting(painting) {
 <template>
   <div class="left-container">
     <div class="logo-div">
-      <img src="/logo.webp" alt="logo">
+      <a @click="display = 2; clearSelectedPainting()"><img src="/logo.webp" alt="logo"></a>
     </div>
     <div class="buttons-box">
       <button 
         @click="display = 2; clearSelectedPainting()"
         :class="{ active: display === 2 }">
-        <span class="text">A propos</span>
+        <span class="text">Accueil</span>
       </button>
       <button 
         @click="display = 1; clearSelectedPainting()"
@@ -123,6 +122,7 @@ body {
 
 .logo-div {
   width: 60%;
+  cursor: pointer;
 }
 
 .logo-div img {

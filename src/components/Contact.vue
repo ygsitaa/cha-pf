@@ -32,16 +32,16 @@ onMounted(async () => {
       {{ error }}
     </div>
     <div v-else>
-      <form class="form-flex">
-          <input type="text" placeholder="Nom complet" required="required"/>
-          <input type="email" placeholder="Votre email" required="required"/>
-          <input type="text" placeholder="Entête" required="required"/>
-          <textarea placeholder="Contenu" class="email-content" required="required"></textarea>
-          <input type="submit" value="Envoyer"/>
+      <form action="https://api.web3forms.com/submit" method="POST" class="form-flex">
+          <input type="hidden" name="access_key" value="7c5aa03f-c7bf-4b36-aa71-66ae1dda5c6e">
+          <input type="text" name="name" placeholder="Nom complet" required="required"/>
+          <input type="email" name="email" placeholder="Votre email" required="required"/>
+          <input type="text" name="subject" placeholder="Entête" required="required"/>
+          <textarea placeholder="Contenu" name="content" class="email-content" required="required"></textarea>
+          <button type="submit">Envoyer</button>
       </form>
       <div class="important-infos">
         <p>Téléphone : {{ contactInfo.phone }}</p>
-        <p class="visual-link"><a>Mentions légales</a></p>
         <br/>
         <p>SMART : {{ contactInfo.smart }} - POIL : {{ contactInfo.poil }}</p>
       </div>
@@ -73,6 +73,7 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 15px;
 }
 
 .visual-link {
@@ -80,7 +81,7 @@ onMounted(async () => {
   text-decoration: underline;
 }
 
-input, textarea {
+input, textarea, button {
   width: 35%;
   border: none;
   /* cursor: pointer; */
